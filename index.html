@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>服薬記録カレンダー（デモ）</title>
+  <meta name="theme-color" content="#0f766e" />
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='128' height='128'%3E%3Crect width='100%25' height='100%25' fill='%230f766e'/%3E%3Ctext x='50%25' y='55%25' dominant-baseline='middle' text-anchor='middle' font-size='72' fill='white'%3EP%3C/text%3E%3C/svg%3E">
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="bar">
+    <h1>服薬記録カレンダー（デモ）</h1>
+    <button id="installBtn" class="ghost" aria-label="ホーム画面に追加">＋PWA</button>
+  </header>
+
+  <main>
+    <section class="card">
+      <h2>1. 予定を登録</h2>
+      <form id="addForm" class="grid">
+        <label>薬名<input name="name" required placeholder="例：降圧薬A"></label>
+        <label>時刻<input name="time" type="time" required></label>
+        <button class="primary" type="submit">追加</button>
+      </form>
+      <p class="muted">※バックエンド不使用。端末内（localStorage）に保存します。</p>
+    </section>
+
+    <section class="card">
+      <h2>2. 今日の予定</h2>
+      <ul id="todayList" class="list"></ul>
+      <div class="row">
+        <button id="notifyTest" class="secondary">通知テスト</button>
+        <button id="snoozeAll" class="ghost">全部5分スヌーズ</button>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>3. 予定一覧（毎日繰り返し）</h2>
+      <ul id="planList" class="list"></ul>
+    </section>
+
+    <section class="card">
+      <h2>4. 履歴（直近7日）</h2>
+      <div id="history" class="history"></div>
+    </section>
+
+    <section class="card">
+      <h2>5. PDF出力（A4一枚）</h2>
+      <div class="row">
+        <input id="pdfFrom" type="date"> 〜 <input id="pdfTo" type="date">
+        <button id="exportPdf" class="primary">PDFを作る</button>
+      </div>
+      <p class="muted">内容：期間・総回数・遵守率(MAR)・日別×時間帯の表・メモ欄・署名欄。</p>
+    </section>
+  </main>
+
+  <footer class="bar small">
+    <span>共有＝伴走。いつでも停止可。</span>
+    <button id="resetBtn" class="danger">全データ初期化</button>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
+  <script src="app.js"></script>
+  <script>
+    // SW登録
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js'));
+    }
+  </script>
+</body>
+</html>
